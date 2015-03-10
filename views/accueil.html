@@ -1,0 +1,49 @@
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12 col-md-12 col-lg-12" style="overflow:auto; position:static" id="messages">
+			<?php
+			foreach($messagesUtilisateur as $message)
+			{
+			?>
+			<div class="panel panel-info">
+				<div class="panel-body">
+					<?php
+					echo Messages::afficheMessage($message->getTexteMessage());
+					?>
+				</div>
+				<div class="panel-footer">
+					- Posté par <a href="index.php?page=profil&user=<?php echo $message->getIdUtilisateur() ?>">
+
+					<?php
+						$auteur = new Utilisateurs($message->getIdUtilisateur());
+						echo $auteur->getIdentifiant();
+					?>
+						</a>
+					<?php
+					echo date('\l\e d/m/Y \à H:i:s', strtotime($message->getDateMessage()));
+					if($idConnecte == $auteur->getIdUtilisateur())
+					{
+
+						?>
+						<div class="pull-right">
+							<form>
+								<button type="submit" name="supprimerMessage" value="<?php echo $message->getIdMessage() ?>" class="btn btn-xs btn-danger">
+									<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+								</button>
+								<input type="hidden"name="idAuteurMessage" value="<?php echo $idConnecte; ?>">
+								<input type="hidden" name="pageRedirection" value="<?php echo $page; ?>">
+							</form>
+						</div>
+						<?php
+					}
+					?>
+
+				</div>
+			</div>
+			<?php
+			//end foreach
+			}
+			?>
+		</div>
+	</div>
+</div>

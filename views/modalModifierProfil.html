@@ -1,0 +1,96 @@
+<div id="modalModifierProfil" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title text-center">
+                    Paramètres du compte
+                </h4>
+            </div>
+            <form id="formModifierProfil" name="formModifierProfil" method="POST" enctype="multipart/form-data">  
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-5 col-md-5 col-lg-5">
+                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                <div class="fileinput-new thumbnail">
+                                    <img style="max-height:200px; max-width:200px;" src="global/img/utilisateur/<?php echo $utilisateurConnecte->getPhoto(); ?>">
+                                </div>
+                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 220px; max-height: 220px;">
+                                </div>
+                                <div class="text-center">
+                                    <span class="btn btn-default btn-file">
+                                        <span class="fileinput-new">Chercher</span>
+                                        <span class="fileinput-exists">Changer</span>
+                                        <input type="file" id="photoDeProfil" name="photoDeProfil">
+                                    </span>
+                                    <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">
+                                        Supprimer
+                                    </a>
+                                </div>
+                            </div> 
+                        </div>
+
+                        <div class="col-sm-7 col-md-7 col-lg-7">
+                            <div class="form-group" id="form-group-numtel">
+                                <label class="control-label" for="numTel">Téléphone : </label>
+                                <input type="text" class="form-control" name="numTel" id="numTel" placeholder="Entrez votre numéro de téléphone" value="<?php echo $utilisateurConnecte->getNumTel(); ?>">
+                            </div>
+
+                            <div class="form-group" id="form-group-email" data-validate="email">
+                                <label class="control-label" for="email">Email : </label>
+                                <input type="email" class="form-control" name="email" id="email" placeholder="Entrez votre email" value="<?php echo $utilisateurConnecte->getEmail(); ?>" required>
+                            </div>
+
+                            <div class="form-group" id="form-group-dateNaissance">
+                                <label class="control-label" for="dateNaissance">Date de Naissance : </label>
+                                <input type="text" class="form-control datepicker" name="dateNaissance" id="dateNaissance" placeholder="Entrez votre dateNaissance" value="<?php echo date('d/m/Y', strtotime($utilisateurConnecte->getDateNaissance())); ?>">
+                            </div> 
+
+                            <div class="form-group">
+                                <label for="description">Description : </label>
+                                <textarea style="resize: none;" class="form-control" rows="3" name="description" id="description" placeholder="Description" maxlength="140"><?php echo $utilisateurConnecte->getDescription(); ?></textarea>
+                            </div>
+
+                            <button type="button" data-toggle="modal" data-target="#confirmationSupprimerCompte" class="btn btn-danger btn-block">Supprimer mon compte</button> 
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="modal-footer row text-center">
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                        <button type="button" class="btn btn-default btn-block" data-dismiss="modal">Annuler</button>
+                    </div>                    
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                        <button type="submit" id="modifierProfil" name="modifierProfil
+                        ."  class="btn btn-primary btn-block">Sauvegarder</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal de confirmation de suppression de compte -->
+<div class="modal fade" id="confirmationSupprimerCompte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Confirmation suppression
+            </div>
+            <div class="modal-body">
+                Êtes-vous certain de vouloir supprimer votre compte?
+                <br>
+                Cette action est irréversible, soyez prudent.
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-default" id="submitModalNonSupprimerCompte">Non</a>
+                    <a id="submitModalSupprimerCompte" class="btn btn-success success">Oui</a>
+                <form id="formSupprimerCompte" name="formSupprimerCompte">
+                    <input type="hidden" id="idUtilisateurSupprimer" name="idUtilisateurSupprimer" value="<?php echo $idConnecte ?>">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

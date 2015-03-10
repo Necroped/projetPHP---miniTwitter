@@ -1,0 +1,288 @@
+<div class="container">
+	<div class="row">
+
+		<!-- profil -->
+		<div class="col-sm-3  col-md-3 col-lg-3" id="profilUtilisateur">
+			<div class="row">
+				<div class="col-sm-12 col-md-12 col-lg-12" style="text-align:center">
+					<img alt="photo de profil" style="max-height:200px; max-width:200px;" src="global/img/utilisateur/<?php echo $utilisateurCourant->getPhoto(); ?>" />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 col-md-12 col-lg-12">
+					<h2 class="text-center">
+						<?php
+						echo $utilisateurCourant->getIdentifiant();
+						?>
+					</h2>
+				</div>
+			</div>
+			<?php
+			$description = $utilisateurCourant->getDescription();
+			if ($description !== null && $description != "")
+			{
+				?>	
+				<div class="row">
+					<div class="text-center col-sm-12 col-md-12 col-lg-12">
+						<hr>
+						<?php
+							echo Messages::afficheMessage(utf8_encode($description));
+						?>	
+						<hr>
+					</div>
+				</div>
+
+				<?php
+			}
+			$dateNaissance = $utilisateurCourant->getDateNaissance();
+
+			if ($dateNaissance !== null)
+			{
+				?>	
+				<div class="row">
+					<div class="text-center col-sm-12 col-md-12 col-lg-12">
+						<p>
+							<span class="glyphicon glyphicon-gift" aria-hidden="true"></span>
+							<?php
+							echo date("d/m/Y", strtotime($dateNaissance));
+							?>
+						</p>		
+					</div>
+				</div>
+				<?php
+			}
+			$numTel = $utilisateurCourant->getNumTel();
+
+			if ($numTel !== null && $numTel !== "")
+			{
+				?>	
+				<div class="row">
+					<div class="text-center col-sm-12 col-md-12 col-lg-12">
+						<p>
+							<span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>
+							<?php
+							echo $numTel;
+							?>
+						</p>		
+					</div>
+				</div>
+				<?php
+			}
+			$email = $utilisateurCourant->getEmail();
+
+			if ($email!= null && $email!== "")
+			{
+				?>	
+				<div class="row">
+					<div class="text-center col-sm-12 col-md-12 col-lg-12">
+						<p>
+							<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+							<?php
+							echo $email;
+							?>
+						</p>		
+					</div>
+				</div>
+				<?php
+			}
+			?>	
+			<?php
+			if($droitDeVoirLesMessages && $idConnecte != $idCourant)
+			{
+				?>
+				<form class="text-center">
+					<button type="submit" class="btn btn-warning" name="nePlusSuivre" style="margin:5px">
+						Se désabonner
+					</button>
+					<input type="hidden" name="utilisateurSuivant2" value="<?php echo $idConnecte; ?>">
+					<input type="hidden" name="utilisateurSuivi2" value="<?php echo $idCourant; ?>">
+				</form>
+				<?php
+			}
+			?>
+
+			<!-- FIN PARTIE profil utilisateur -->
+		</div>
+
+		<?php
+		// si l'utilisateur a le droit de voir les messages de cet utlisateur
+		if($droitDeVoirLesMessages)
+		{
+		?>
+		<!-- DROITE -->
+		<div class="col-sm-6 col-md-6 col-lg-6" style="overflow:auto; position:static;" id="listeMessages">
+			<!-- liste des messages -->
+				<?php
+				foreach($messagesUtilisateur as $message)
+				{
+					?>
+					<div class="panel panel-info">
+						<div class="panel-body" style="word-wrap: break-word;">
+							<?php
+							echo Messages::afficheMessage($message->getTexteMessage());
+							?>
+						</div>
+						<div class="panel-footer">
+							- Posté 
+							<?php
+							echo date('\l\e d/m/Y \à H:i:s', strtotime($message->getDateMessage()));
+
+							if($idCourant==$idConnecte)
+							{
+								?>
+								<div class="pull-right">
+									<form id="formSupprimerMessage">
+										<button data-toggle="modal" data-target="#confirmationSuppression" type="button" name="supprimerMessage" class="btn btn-xs btn-danger" id="supprimerMessage">
+											<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+										</button>
+										<input type="hidden" name="idSupprimerMessage" value="<?php echo $message->getIdMessage() ?>">
+										<input type="hidden" name="idAuteurMessage" value="<?php echo $idConnecte; ?>">
+										<input type="hidden" name="pageRedirection" value="<?php echo $page; ?>">
+									</form>
+								</div>
+
+								<div class="modal fade" id="confirmationSuppression" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+								    <div class="modal-dialog">
+								        <div class="modal-content">
+								            <div class="modal-header">
+								                Confirmation suppression
+								            </div>
+								            <div class="modal-body">
+								                Êtes-vous certain de vouloir supprimer ce message?
+								            <blockquote>
+								            	<p style="word-wrap: break-word;">
+								            	<?php echo Messages::afficheMessage($message->getTexteMessage()); ?>
+												</p>
+								            </blockquote>
+								            </div>
+								            <div class="modal-footer">
+								                <button type="button" class="btn btn-default" data-dismiss="modal">Non</button>
+								                <a href="#" id="submitModalSupprimer" class="btn btn-success success">Oui</a>
+								            </div>
+								        </div>
+								    </div>
+								</div>
+								<?php
+							}
+							?>
+
+						</div>
+					</div>
+
+					<?php
+					//end foreach
+				}
+				?>
+		</div>
+		<?php
+		}
+				// si l'utilisateur n'a pas le droit de voir les messages
+		else
+		{
+		?>
+		<div class="col-sm-6 col-md-6 col-lg-6" id="sabonner" >
+			<!-- liste des messages -->
+				<div class="sabonner text-center" style="overflow:hidden;">
+					<h4>
+						<span>
+							Vous ne pouvez pas accéder aux messages de cet utilisateur.
+						</span>
+					</h4>
+					<form>
+						<button type="submit" class="btn btn-info btn-lg" name="suivre">
+							S'abonner
+						</button>
+						<input type="hidden" name="utilisateurSuivant" value="<?php echo $idConnecte; ?>">
+						<input type="hidden" name="utilisateurSuivi" value="<?php echo $idCourant; ?>">
+					</form>
+				</div>
+		</div>
+		<?php
+		}
+		?>
+		<div class="col-sm-3 col-md-3 col-lg-3">
+			<div class="panel-group" id="accordeon" role="tablist" aria-multiselectable="true">
+				<div class="panel panel-default">
+					<div class="panel-heading" role="tab" id="headingUtilisateursSuivis">
+						<h4 class="panel-title">
+							<!-- aria-expanded="true"  -->
+							<a data-toggle="collapse" data-parent="#accordeon" href="#bodyUtilisateursSuivis" aria-expanded="false" aria-controls="bodyUtilisateursSuivis">
+								Vos abonnements
+								<span class="badge pull-right">
+									<?php echo $nbUtilisateursSuivi ?>
+								</span>
+							</a>
+						</h4>
+					</div>
+					<!-- class="panel-collapse collapse in" -->
+					<div id="bodyUtilisateursSuivis" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingUtilisateursSuivis">
+						<div class="list-group">
+							<?php 
+							if($nbUtilisateursSuivi != 0)
+							{
+
+								foreach ($utilisateursSuivis as $utilisateurSuivi) 
+								{ 
+									$USuivi = new Utilisateurs($utilisateurSuivi);
+									?>	
+									<a href="index.php?page=profil&user=<?php echo $utilisateurSuivi ?>" class="list-group-item">
+										<?php echo $USuivi->getIdentifiant(); ?>
+									</a>
+									<?php 
+								} 
+							}
+							else
+							{
+								?>
+								<a href="index.php?page=profil&user=<?php echo $utilisateurSuivant ?>" class="list-group-item disabled">
+									Aucun utilisateur
+								</a>	
+								<?php
+							}
+							?>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading" role="tab" id="headingUtilisateursSuivants">
+						<h4 class="panel-title">
+							<a class="collapsed" data-toggle="collapse" data-parent="#accordeon" href="#bodyUtilisateursSuivants" aria-expanded="false" aria-controls="bodyUtilisateursSuivants">
+								Vos abonnés
+								<span class="badge pull-right">
+									<?php echo $nbUtilisateursSuivant ?>
+								</span>
+							</a>
+						</h4>
+					</div>
+					<div id="bodyUtilisateursSuivants" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingUtilisateursSuivants">
+						<div class="list-group">
+							<?php 
+							if($nbUtilisateursSuivant != 0)
+							{
+
+								foreach ($utilisateursSuivants as $utilisateurSuivant) 
+								{ 
+									$USuivant = new Utilisateurs($utilisateurSuivant);
+									?>	
+									<a href="index.php?page=profil&user=<?php echo $utilisateurSuivant ?>" class="list-group-item">
+										<?php echo $USuivant->getIdentifiant(); ?>
+									</a>
+									<?php 
+								} 
+							}
+							else
+							{
+								?>
+								<a href="index.php?page=profil&user=<?php echo $utilisateurSuivant ?>" class="list-group-item disabled">
+									Aucun utilisateur
+								</a>	
+								<?php
+							}
+							?>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,57 @@
+<div class="navbar navbar-default navbar-static-top">
+	<div class="container">
+		<div class="collapse navbar-collapse">
+			<ul class="nav navbar-nav">
+				<li class="<?php echo ($page=='accueil') ? 'active': '' ; ?>">
+					<a href="index.php?page=accueil" >
+						Accueil 
+					</a>
+				</li>
+				<li class="<?php echo ($page=='profil' && $idConnecte==$idCourant) ? 'active':'' ; ?>">
+					<a href="index.php?page=profil&user=<?php echo $idConnecte; ?>">
+						Mon profil
+					</a>
+				</li>
+				<!-- onchange="javascript:rechercheUtilisateurChange()" -->
+				<form class="navbar-form navbar-left">
+					<select class="selectpicker show-menu-arrow" data-live-search="true" data-size="5" name="rechercheUtilisateur" id="rechercheUtilisateur" >
+					    <option selected disabled data-hidden="true">Rechercher un utilisateur</option>
+					    <?php 
+					    foreach ($listeUtilisateurs as $idUtilisateur) 
+					    {
+					    	$utilisateur = new Utilisateurs($idUtilisateur['idUtilisateur']);
+					   	?>
+					    <option value="<?php echo $utilisateur->getIdUtilisateur(); ?>" style="background:url('global/img/utilisateur/<?php echo $utilisateur->getPhoto(); ?>') no-repeat; background-size:25px; background-position:bottom right;">
+					    	<?php echo $utilisateur->getIdentifiant() ?>
+					    	<?php echo ($utilisateur->getIdUtilisateur()==$idConnecte) ? ' (moi)': '' ?>
+					    </option>
+					    <?php 
+					    } 
+					    ?>
+				    </select>
+				</form>
+			</ul>
+			<ul class="nav nav-pills navbar-right">
+				<li role="presentation">
+					<!-- modalEcrireMessage est le modal situé dans views/modalEcrireMessage.html -->
+					<button type="text" data-toggle="modal" data-target="#modalEcrireMessage" class="btn btn-default navbar-btn">
+						Ecrire un message
+					</button>
+				</li>
+				<li role="presentation">
+					<!-- modalModifierProfil est le modal situé dans views/modalModifierProfil.html -->
+					<button type="text" data-toggle="modal" data-target="#modalModifierProfil" class="btn btn-default navbar-btn">
+						Modifier mon profil
+					</button>
+				</li>
+				<li role="presentation">
+					<form>
+						<button type="submit" name="deconnexion" class="btn btn-danger navbar-btn">
+							Se déconnecter
+						</button>
+					</form>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>

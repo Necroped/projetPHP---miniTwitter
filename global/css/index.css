@@ -1,0 +1,92 @@
+/* ///////////////////////////////////////////////////////
+surcharge de bootstrap, parce que c'est plus beau comme ca
+ //////////////////////////////////////////////////////*/
+
+.dropdown-menu > li.active, 
+.dropdown-menu > li.active > a,
+.dropdown-menu > li.active > a :focus, 
+.dropdown-menu > li.active > a :hover,
+.dropdown-menu > li.active :focus, 
+.dropdown-menu > li.active :hover
+{
+    color: black;
+}
+
+ /*Pour que l'alerte soit au dessus de la barre de navigation*/
+.alert
+{
+    margin-bottom: 0;
+}
+
+li > form
+{
+    margin-bottom:0;
+}
+
+/*Centrer la div verticalement et horizontalement*/
+.divAccueil
+{
+	width: 400px;
+	height: 200px;
+
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    margin: auto;
+
+}
+
+#profilUtilisateur
+{
+    background-color: #B1B1B1;
+    box-shadow: -2px 2px 5px 2px rgba(0, 0, 0, 0.8); 
+}
+
+.sabonner
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    margin: 50px;
+
+    position: relative;
+    overflow:hidden;
+
+}
+
+/*Gestion des inputs d'un formulaire*/
+.input-group-addon.primary 
+{
+    color: rgb(255, 255, 255);
+    background-color: rgb(50, 118, 177);
+    border-color: rgb(40, 94, 142);
+}
+.input-group-addon.success 
+{
+    color: rgb(255, 255, 255);
+    background-color: rgb(92, 184, 92);
+    border-color: rgb(76, 174, 76);
+}
+.input-group-addon.info 
+{
+    color: rgb(255, 255, 255);
+    background-color: rgb(57, 179, 215);
+    border-color: rgb(38, 154, 188);
+}
+.input-group-addon.warning 
+{
+    color: rgb(255, 255, 255);
+    background-color: rgb(240, 173, 78);
+    border-color: rgb(238, 162, 54);
+}
+.input-group-addon.danger
+{
+    color: rgb(255, 255, 255);
+    background-color: rgb(217, 83, 79);
+    border-color: rgb(212, 63, 58);
+}
